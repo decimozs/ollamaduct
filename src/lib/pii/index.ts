@@ -3,15 +3,13 @@
  * Presidio-inspired privacy shield for LLM Gateway
  */
 
-export { PRESIDIO_PATTERNS, getAllPatterns } from "./patterns";
-export type { PatternConfig, CustomPattern } from "./patterns";
-
-export { PIIDetector, detectPII } from "./recognizers";
+export type { AnonymizationResult, AnonymizerConfig } from "./anonymizer";
+export { anonymize, sanitizeMessages } from "./anonymizer";
+export type { CustomPattern, PatternConfig } from "./patterns";
+export { getAllPatterns, PRESIDIO_PATTERNS } from "./patterns";
 export type {
-	DetectionResult,
 	DetectionMode,
+	DetectionResult,
 	DetectorOptions,
 } from "./recognizers";
-
-export { anonymize, sanitizeMessages } from "./anonymizer";
-export type { AnonymizerConfig, AnonymizationResult } from "./anonymizer";
+export { detectPII, PIIDetector } from "./recognizers";

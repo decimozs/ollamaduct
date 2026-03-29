@@ -5,6 +5,7 @@ Get up and running with Ollamaduct Gateway in minutes.
 ## Prerequisites
 
 - [Bun](https://bun.sh) runtime (v1.0 or higher)
+- [Ollama](https://ollama.com) installed and running locally
 
 ## Installation
 
@@ -26,35 +27,34 @@ cp .env.example .env
 
 ### 1. Configure Environment Variables
 
-Edit `.env` with your API keys:
+Edit `.env` with your Ollama settings:
 
 ```bash
-# Required - at least one provider key
-OPENAI_KEY=sk-your-openai-key
+# Ollama server URL (default: http://localhost:11434)
+OLLAMA_URL=http://localhost:11434
 
-# Optional - additional providers
-GROQ_KEY=your-groq-key
-OLLAMA_KEY=your-ollama-key
+# Optional: Ollama API key for cloud models
+OLLAMA_KEY=your-ollama-cloud-key
+
+# Optional: Default model to use (default: llama2)
+DEFAULT_MODEL=llama2
 ```
 
-### 2. Create Workspace
+### 2. Ensure Ollama is Running
+
+```bash
+# Pull a model if needed
+ollama pull llama2
+
+# Verify Ollama is running
+ollama list
+```
+
+### 3. Create Workspace
 
 ```bash
 # Create your first workspace
 bun run cli workspaces --create "My Project"
-```
-
-### 3. Add LLM Providers
-
-```bash
-# Add OpenAI
-bun run cli providers --add --name "openai" --url "https://api.openai.com/v1/chat/completions" --env-key "OPENAI_KEY"
-
-# Add local Ollama
-bun run cli providers --add --name "ollama" --url "http://localhost:11434/v1/chat/completions" --env-key "OLLAMA_KEY" --local
-
-# Add Groq
-bun run cli providers --add --name "groq" --url "https://api.groq.com/openai/v1/chat/completions" --env-key "GROQ_KEY"
 ```
 
 ### 4. Create API Key
@@ -76,19 +76,33 @@ Server will start at `http://localhost:3000`
 ## First Request
 
 ```bash
-curl -X POST "http://localhost:3000/v1/chat/completions" \
+# Chat with Ollama using native API
+curl -X POST "http://localhost:3000/api/chat" \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
-  -H "x-provider: openai" \
   -d '{
-    "model": "gpt-4",
+    "model": "llama2",
     "messages": [{"role": "user", "content": "Hello!"}]
   }'
 ```
 
+## Available Models
+
+Ollamaduct uses models from your local Ollama installation. Common models include:
+
+| Model | Description |
+|-------|-------------|
+| llama2 | General purpose (default) |
+| llama3 | Latest Llama 3 |
+| llama3.3 | Llama 3.3 instruction-tuned |
+| qwen2.5-coder | Code generation |
+| mistral | General purpose |
+
+Pull additional models with: `ollama pull <model-name>`
+
 ## Next Steps
 
 - [API Reference](API_REFERENCE.md) - Learn about all endpoints and options
-- [CLI Commands](CLI_COMMANDS.md) - Manage workspaces, providers, and view analytics
+- [CLI Commands](CLI_COMMANDS.md) - Manage workspaces and view analytics
 - [Privacy Shield](PRIVACY_SHIELD.md) - Configure PII detection
 - [Deployment](DEPLOYMENT.md) - Deploy to production

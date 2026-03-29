@@ -189,7 +189,7 @@ export const PRESIDIO_PATTERNS: Record<string, PatternConfig> = {
 
 	DATE_OF_BIRTH: {
 		regex:
-			/\b(?:0[1-9]|1[0-2])[-\/](?:0[1-9]|[12][0-9]|3[01])[-\/](?:19|20)\d{2}\b/g,
+			/\b(?:0[1-9]|1[0-2])[-/](?:0[1-9]|[12][0-9]|3[01])[-/](?:19|20)\d{2}\b/g,
 		score: 0.6,
 		description: "Dates of birth (MM/DD/YYYY or MM-DD-YYYY)",
 	},

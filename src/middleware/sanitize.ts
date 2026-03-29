@@ -3,9 +3,9 @@
  * Detects and redacts personally identifiable information in LLM requests
  */
 
-import { PIIDetector, sanitizeMessages } from "../lib/pii";
-import type { DetectionMode, CustomPattern } from "../lib/pii";
 import { PII_CONFIG } from "../config";
+import type { CustomPattern, DetectionMode } from "../lib/pii";
+import { PIIDetector, sanitizeMessages } from "../lib/pii";
 import type { SanitizationResult } from "../types";
 
 /**

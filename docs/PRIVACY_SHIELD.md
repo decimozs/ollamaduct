@@ -73,7 +73,7 @@ curl -X POST "http://localhost:3000/v1/chat/completions" \
 
 | Entity | Example |
 |--------|---------|
-| OpenAI API Key | sk-... |
+| Ollama API Key | ollama-... |
 | AWS Access Key | AKIAIOSFODNN7EXAMPLE |
 | AWS Secret Key | wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY |
 | Azure Key | your-azure-key |

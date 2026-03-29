@@ -1,6 +1,6 @@
-import { db } from "../../db";
-import { getWorkspaces, formatTimestamp } from "../utils/query";
 import { nanoid } from "nanoid";
+import { db } from "../../db";
+import { formatTimestamp, getWorkspaces } from "../utils/query";
 
 interface CliOptions {
 	limit?: number;

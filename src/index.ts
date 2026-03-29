@@ -6,7 +6,7 @@ import {
 import { LogLayer } from "loglayer";
 import { Ollama } from "ollama";
 import { serializeError } from "serialize-error";
-import { OLLAMA_CONFIG, DEFAULT_MODEL } from "./config";
+import { DEFAULT_MODEL, OLLAMA_CONFIG } from "./config";
 import { searchCache, upsertCache } from "./lib/vector-store";
 import { authMiddleware } from "./middleware/auth";
 import { sanitizeRequest, sanitizeResponse } from "./middleware/sanitize";

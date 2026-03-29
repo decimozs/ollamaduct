@@ -1,7 +1,7 @@
 import {
-	pipeline,
 	env,
 	type FeatureExtractionPipeline,
+	pipeline,
 } from "@xenova/transformers";
 
 env.allowLocalModels = false;

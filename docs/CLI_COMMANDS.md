@@ -1,6 +1,6 @@
 # CLI Commands
 
-Ollamaduct includes a comprehensive CLI for managing workspaces, providers, and viewing analytics.
+Ollamaduct includes a comprehensive CLI for managing workspaces, API keys, and viewing analytics for your Ollama gateway.
 
 ## Usage
 
@@ -28,35 +28,15 @@ bun run cli workspaces --create "My Project"
 bun run cli workspaces --delete ws_abc123
 ```
 
-## Provider Management
+## Model Management
 
-### List Providers
-
-```bash
-bun run cli providers
-```
-
-### Add Provider
+### List Available Models
 
 ```bash
-# Add OpenAI
-bun run cli providers --add --name "openai" --url "https://api.openai.com/v1/chat/completions" --env-key "OPENAI_KEY"
-
-# Add local Ollama
-bun run cli providers --add --name "ollama" --url "http://localhost:11434/v1/chat/completions" --env-key "OLLAMA_KEY" --local
-
-# Add Ollama Cloud
-bun run cli providers --add --name "ollama:cloud" --url "https://api.ollama.com/v1/chat/completions" --env-key "OLLAMA_CLOUD_KEY"
-
-# Add Groq
-bun run cli providers --add --name "groq" --url "https://api.groq.com/openai/v1/chat/completions" --env-key "GROQ_KEY"
+bun run cli models
 ```
 
-### Delete Provider
-
-```bash
-bun run cli providers --delete openai
-```
+This shows models available in your local Ollama installation.
 
 ## API Key Management
 
@@ -93,17 +73,14 @@ bun run cli logs
 # Limit results
 bun run cli logs --limit 50
 
-# Filter by provider
-bun run cli logs --provider openai
-
 # Filter by workspace
 bun run cli logs --workspace ws_abc123
 
 # Filter by model
-bun run cli logs --model gpt-4
+bun run cli logs --model llama2
 
 # Combine filters
-bun run cli logs --provider openai --workspace ws_abc123 --limit 100
+bun run cli logs --workspace ws_abc123 --model llama2 --limit 100
 ```
 
 ## Statistics
@@ -114,11 +91,11 @@ bun run cli logs --provider openai --workspace ws_abc123 --limit 100
 # Overall statistics
 bun run cli stats
 
-# By provider
-bun run cli stats --provider openai
-
 # By workspace
 bun run cli stats --workspace ws_abc123
+
+# By model
+bun run cli stats --model llama2
 ```
 
 ## Cache Management
@@ -135,8 +112,8 @@ bun run cli cache
 # Clear all cache
 bun run cli cache --clear
 
-# Clear by provider
-bun run cli cache --clear --provider openai
+# Clear by model
+bun run cli cache --clear --model llama2
 
 # Clear by workspace
 bun run cli cache --clear --workspace ws_abc123
@@ -153,13 +130,14 @@ bun run cli rates
 ### Add Model Rate
 
 ```bash
-bun run cli rates --add --model gpt-4 --input-rate 0.03 --output-rate 0.06
+# Add rate for a model (for cost tracking)
+bun run cli rates --add --model llama2 --input-rate 0.0 --output-rate 0.0
 ```
 
 ### Delete Model Rate
 
 ```bash
-bun run cli rates --delete gpt-4
+bun run cli rates --delete llama2
 ```
 
 ## Teams

@@ -14,9 +14,8 @@ http://localhost:3000
 |--------|----------|-------------|
 | GET | `/` | Health check |
 | GET | `/healthcheck` | Detailed health status |
-| GET | `/api/tags` | List available models |
-| POST | `/api/chat` | Chat completion (Ollama) |
-| POST | `/v1/chat/completions` | Chat completion (OpenAI-compatible) |
+| GET | `/api/tags` | List available Ollama models |
+| POST | `/api/chat` | Chat completion |
 
 ## Authentication
 
@@ -26,14 +25,17 @@ All requests require a Bearer token in the Authorization header:
 -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
+Create an API key using:
+```bash
+bun run cli keys --create
+```
+
 ## Request Headers
 
 | Header | Required | Description |
 |--------|----------|-------------|
 | `Authorization` | Yes | Bearer token with API key |
-| `x-provider` | No | Provider name (default: openai) |
 | `x-pii-mode` | No | PII detection mode (strict/balanced/audit/off) |
-| `x-local-only` | No | Force local-only providers (true/false) |
 | `x-cache` | No | Enable/disable semantic cache (default: true) |
 | `x-pii-response` | No | Sanitize LLM response (default: false) |
 | `x-pii-audit` | No | Detect without redaction (default: false) |
@@ -47,75 +49,9 @@ All requests require a Bearer token in the Authorization header:
 | `X-PII-Detected` | Whether PII was detected (true/false) |
 | `X-PII-Count` | Number of PII detections |
 | `X-PII-Entities` | Comma-separated entity types |
-| `X-Local-Only` | Whether local-only mode was enforced |
 | `X-PII-Response-Redacted` | Whether response was sanitized |
 
-## OpenAI-Compatible API
-
-### Chat Completions
-
-**Endpoint:** `POST /v1/chat/completions`
-
-**Request:**
-
-```bash
-curl -X POST "http://localhost:3000/v1/chat/completions" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -H "x-provider: openai" \
-  -d '{
-    "model": "gpt-4",
-    "messages": [
-      {"role": "system", "content": "You are a helpful assistant."},
-      {"role": "user", "content": "Hello!"}
-    ],
-    "temperature": 0.7,
-    "max_tokens": 100
-  }'
-```
-
-**Response:**
-
-```json
-{
-  "id": "chatcmpl-123",
-  "object": "chat.completion",
-  "created": 1234567890,
-  "model": "gpt-4",
-  "choices": [
-    {
-      "index": 0,
-      "message": {
-        "role": "assistant",
-        "content": "Hello! How can I help you today?"
-      },
-      "finish_reason": "stop"
-    }
-  ],
-  "usage": {
-    "prompt_tokens": 10,
-    "completion_tokens": 20,
-    "total_tokens": 30
-  }
-}
-```
-
-### Streaming Chat Completions
-
-```bash
-curl -X POST "http://localhost:3000/v1/chat/completions" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "gpt-4",
-    "messages": [{"role": "user", "content": "Hello!"}],
-    "stream": true
-  }'
-```
-
-## Ollama API
-
-### List Models
+## List Models
 
 **Endpoint:** `GET /api/tags`
 
@@ -139,7 +75,7 @@ curl -X GET "http://localhost:3000/api/tags" \
 }
 ```
 
-### Chat Completion
+## Chat Completion
 
 **Endpoint:** `POST /api/chat`
 
@@ -172,7 +108,7 @@ curl -X POST "http://localhost:3000/api/chat" \
 }
 ```
 
-### Streaming Chat Completion
+## Streaming Chat Completion
 
 ```bash
 curl -X POST "http://localhost:3000/api/chat" \
@@ -185,14 +121,31 @@ curl -X POST "http://localhost:3000/api/chat" \
   }'
 ```
 
-## Supported Providers
+Response is streamed as NDJSON:
 
-| Provider | Header Value | Environment Key |
-|----------|--------------|-----------------|
-| OpenAI | `openai` | `OPENAI_KEY` |
-| Groq | `groq` | `GROQ_KEY` |
-| Ollama (local) | `ollama` | `OLLAMA_KEY` |
-| Ollama Cloud | `ollama:cloud` | `OLLAMA_CLOUD_KEY` |
+```json
+{"model":"llama2","message":{"role":"assistant","content":"Hello"},"done":false}
+{"model":"llama2","message":{"role":"assistant","content":"Hello!"},"done":false}
+{"model":"llama2","done":true,"prompt_eval_count":10,"eval_count":20}
+```
+
+## Available Models
+
+Ollamaduct uses models from your local Ollama installation. Configure the default model in `.env`:
+
+```bash
+DEFAULT_MODEL=llama2
+```
+
+Common models:
+
+| Model | Description |
+|-------|-------------|
+| llama2 | General purpose (default) |
+| llama3 | Latest Llama 3 |
+| llama3.3 | Llama 3.3 instruction-tuned |
+| qwen2.5-coder | Code generation |
+| mistral | General purpose |
 
 ## Error Responses
 
@@ -205,24 +158,15 @@ curl -X POST "http://localhost:3000/api/chat" \
 }
 ```
 
-### 403 Forbidden
-
-```json
-{
-  "error": "Local-only mode enabled. Only Ollama (local) provider is allowed.",
-  "code": "LOCAL_ONLY_VIOLATION"
-}
-```
-
 ### 502 Bad Gateway
 
 ```json
 {
-  "error": "Failed to connect to provider",
+  "error": "Failed to connect to Ollama",
   "code": "PROVIDER_ERROR"
 }
 ```
 
 ## Rate Limiting
 
-Rate limiting is planned for future releases. Configure appropriate limits based on your provider's quotas.
+Rate limiting is planned for future releases.

@@ -1,4 +1,4 @@
-import { getUsageLogs, formatTimestamp } from "../utils/query";
+import { formatTimestamp, getUsageLogs } from "../utils/query";
 
 interface CliOptions {
 	limit?: number;

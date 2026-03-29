@@ -1,4 +1,4 @@
-import { getApiKeys, formatTimestamp } from "../utils/query";
+import { formatTimestamp, getApiKeys } from "../utils/query";
 
 interface CliOptions {
 	limit?: number;

@@ -1,9 +1,9 @@
-import { runLogs } from "./commands/logs";
-import { runStats } from "./commands/stats";
-import { runKeys } from "./commands/keys";
-import { runWorkspaces } from "./commands/workspaces";
 import { runCache } from "./commands/cache";
+import { runKeys } from "./commands/keys";
+import { runLogs } from "./commands/logs";
 import { runModels } from "./commands/models";
+import { runStats } from "./commands/stats";
+import { runWorkspaces } from "./commands/workspaces";
 
 interface CliOptions {
 	limit?: number;

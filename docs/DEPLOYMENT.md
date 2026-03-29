@@ -7,17 +7,18 @@ Guide for deploying Ollamaduct Gateway to production.
 ### Required
 
 ```bash
-# At least one provider key is required
-OPENAI_KEY=sk-your-openai-key
+# Ollama server URL (ensure Ollama is running)
+OLLAMA_URL=http://localhost:11434
 ```
 
 ### Optional
 
 ```bash
-# Additional providers
-GROQ_KEY=your-groq-key
-OLLAMA_KEY=your-ollama-key
-OLLAMA_CLOUD_KEY=your-ollama-cloud-key
+# Default model (default: llama2)
+DEFAULT_MODEL=llama2
+
+# Ollama Cloud API key (if using cloud models)
+OLLAMA_KEY=your-ollama-cloud-key
 
 # Server configuration
 PORT=3000
@@ -47,8 +48,8 @@ CMD ["bun", "run", "src/index.ts"]
 ```bash
 docker build -t ollamaduct-gateway .
 docker run -p 3000:3000 \
-  -e OPENAI_KEY=sk-... \
-  -e GROQ_KEY=your-groq-key \
+  -e OLLAMA_URL=http://host.docker.internal:11434 \
+  -v ollama_data:/root/.ollama \
   ollamaduct-gateway
 ```
 
@@ -63,11 +64,14 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - OPENAI_KEY=${OPENAI_KEY}
-      - GROQ_KEY=${GROQ_KEY}
-      - OLLAMA_KEY=${OLLAMA_KEY}
+      - OLLAMA_URL=http://host.docker.internal:11434
+      - DEFAULT_MODEL=llama2
     volumes:
       - ./pathway.db:/app/pathway.db
+      - ollama_data:/root/.ollama
+
+volumes:
+  ollama_data:
 ```
 
 ## Production Best Practices
@@ -96,8 +100,7 @@ services:
 ### Privacy
 
 1. **PII Detection** - Enable in production for sensitive data
-2. **Local-Only Mode** - Use for compliance requirements
-3. **Response Sanitization** - Enable `x-pii-response` header as needed
+2. **Response Sanitization** - Enable `x-pii-response` header as needed
 
 ## Systemd Service
 
@@ -114,7 +117,8 @@ User=ollamaduct
 WorkingDirectory=/opt/ollamaduct
 ExecStart=/usr/bin/bun run src/index.ts
 Restart=always
-Environment=OPENAI_KEY=sk-...
+Environment=OLLAMA_URL=http://localhost:11434
+Environment=DEFAULT_MODEL=llama2
 Environment=NODE_ENV=production
 
 [Install]
@@ -200,18 +204,23 @@ cp pathway.db.backup pathway.db
 
 ### Connection Refused
 
-- Check if port is correct
-- Verify firewall rules
-- Check if server is running
+- Check if Ollama is running
+- Verify `OLLAMA_URL` is correct
+- Check firewall rules
 
 ### 502 Bad Gateway
 
-- Verify provider API keys
+- Verify Ollama is accessible
 - Check network connectivity
-- Review provider status
+- Review Ollama server logs
 
 ### High Latency
 
 - Check cache configuration
-- Monitor provider response times
+- Monitor Ollama response times
 - Review embedding model performance
+
+### No Models Available
+
+- Pull models: `ollama pull llama2`
+- Verify Ollama is running: `ollama list`

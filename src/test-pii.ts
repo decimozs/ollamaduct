@@ -69,8 +69,9 @@ for (const testCase of testCases) {
 
 // Test anonymization
 console.log("\n📝 Testing Anonymization\n");
-import { anonymize } from "./lib/pii/anonymizer";
+
 import { PII_CONFIG } from "./config";
+import { anonymize } from "./lib/pii/anonymizer";
 
 const testText =
 	"Email me at john@example.com or call 555-1234. My API key is sk-abc123xyz456.";
