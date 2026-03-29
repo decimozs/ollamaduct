@@ -18,9 +18,8 @@
 		"noUnusedParameters": false,
 		"noPropertyAccessFromIndexSignature": false,
 		"rootDir": "src",
-		"baseUrl": "src",
 		"paths": {
-			"@/*": ["./*"]
+			"@/*": ["./src/*"]
 		}
 	},
 	"include": ["src/**/*"],
