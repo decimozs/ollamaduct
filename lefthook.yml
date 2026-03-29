@@ -1,0 +1,4 @@
+pre-push:
+  commands:
+    format:
+      run: bun run format
