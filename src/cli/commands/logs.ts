@@ -22,7 +22,7 @@ export async function runLogs(options: CliOptions) {
 		model: log.model,
 		input_tokens: log.input_tokens,
 		output_tokens: log.output_tokens,
-		latency_ms: log.latency_ms + "ms",
+		latency_ms: `${log.latency_ms}ms`,
 	}));
 
 	console.log("");

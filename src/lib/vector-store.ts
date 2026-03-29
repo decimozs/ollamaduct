@@ -45,7 +45,7 @@ export async function initVectorStore(): Promise<void> {
 
 		const entries = existingEntries as CacheEntry[];
 		for (const entry of entries) {
-			if (!entry || !entry.prompt_text) continue;
+			if (!entry?.prompt_text) continue;
 			const embedding = await generateEmbedding(entry.prompt_text);
 			const entryWithEmbedding = {
 				...entry,
@@ -200,7 +200,7 @@ export async function getCacheStats(): Promise<{
 
 	const entriesArray = entries as { model: string; count: number }[];
 	for (const entry of entriesArray) {
-		if (entry && entry.model) {
+		if (entry?.model) {
 			byModel[entry.model] = entry.count;
 			totalEntries += entry.count;
 		}

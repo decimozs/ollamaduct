@@ -89,13 +89,13 @@ const app = createApp()
 			}
 		}
 
-		const ollamaUrl = `${OLLAMA_CONFIG.url}/api/chat`;
+		const _ollamaUrl = `${OLLAMA_CONFIG.url}/api/chat`;
 
 		const startTime = Date.now();
 
 		if (isStreaming) {
 			try {
-				let fullResponse = "";
+				let _fullResponse = "";
 				let inputTokens = 0;
 				let outputTokens = 0;
 
@@ -115,7 +115,7 @@ const app = createApp()
 								controller.enqueue(encoder.encode(jsonLine));
 
 								if (chunk.message?.content) {
-									fullResponse += chunk.message.content;
+									_fullResponse += chunk.message.content;
 								}
 
 								if (chunk.done) {

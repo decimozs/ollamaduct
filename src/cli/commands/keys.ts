@@ -15,7 +15,7 @@ export async function runKeys(options: CliOptions) {
 	const formatted = keys.map((key) => ({
 		id: key.id,
 		name: key.name,
-		key: key.key.substring(0, 20) + "...",
+		key: `${key.key.substring(0, 20)}...`,
 		workspace_id: key.workspace_id,
 		is_active: key.is_active ? "Yes" : "No",
 		created_at: formatTimestamp(key.created_at),
