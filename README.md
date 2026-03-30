@@ -2,7 +2,7 @@
 
 # Ollamaduct
 
-A lightweight, local-first AI gateway for Ollama with workspaces, cost tracking, and privacy controls.
+A lightweight, local-first AI gateway for Ollama with workspaces, usage analytics, and privacy controls.
 
 ## Overview
 
