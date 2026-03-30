@@ -8,6 +8,9 @@ A lightweight, local-first AI gateway for Ollama with workspaces, cost tracking,
 
 Ollamaduct is an open-source gateway designed to sit between your local apps and Ollama. It adds a layer of intelligence to your LLM setup, handling the heavy lifting like managing access, tracking usage, and speeding up responses with smart caching while ensuring sensitive data stays under your control.
 
+> [!NOTE]
+> Ollamaduct is currently CLI-only. A web-based interface and MCP server support are planned for future releases to improve the overall experience. Contributions and feedback are welcome!
+
 ## Installation
 
 ### Prerequisites
