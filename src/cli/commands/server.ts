@@ -4,15 +4,19 @@ import { CONFIG_PATH, DATA_DIR, PID_PATH } from "../../config";
 
 const DEFAULT_PORT = 3000;
 
-export async function runServerStart(options: { port?: number }) {
+export async function runServerStart(options: {
+	port?: number;
+	detach?: boolean;
+}) {
 	const port = options.port || DEFAULT_PORT;
+	const detach = options.detach || false;
 
 	if (existsSync(PID_PATH)) {
 		const pid = parseInt(readFileSync(PID_PATH, "utf-8"), 10);
 		try {
 			process.kill(pid, 0);
 			console.log(`Server is already running (PID: ${pid})`);
-			console.log(`Stop it first: ollamaduct server stop`);
+			console.log(`Stop it first: ollamaduct stop`);
 			return;
 		} catch {
 			unlinkSync(PID_PATH);
@@ -24,14 +28,15 @@ export async function runServerStart(options: { port?: number }) {
 	console.log(`Port: ${port}`);
 	console.log(`Config: ${CONFIG_PATH}`);
 	console.log(`Data directory: ${DATA_DIR}`);
+	console.log(`Mode: ${detach ? "detached (background)" : "foreground"}`);
 	console.log("");
 
 	const serverProcess = spawn(
 		process.execPath,
 		["dist/server.js", "--config", CONFIG_PATH],
 		{
-			stdio: "inherit",
-			detached: false,
+			stdio: detach ? "ignore" : "inherit",
+			detached: detach,
 			cwd: process.cwd(),
 			env: {
 				...process.env,
@@ -41,21 +46,33 @@ export async function runServerStart(options: { port?: number }) {
 		},
 	);
 
-	writeFileSync(PID_PATH, serverProcess.pid?.toString() || "");
+	if (detach && serverProcess.pid) {
+		writeFileSync(PID_PATH, serverProcess.pid.toString());
+		serverProcess.unref();
+	} else {
+		writeFileSync(PID_PATH, serverProcess.pid?.toString() || "");
+	}
 
 	serverProcess.on("exit", (code) => {
 		if (existsSync(PID_PATH)) {
 			unlinkSync(PID_PATH);
 		}
-		if (code !== 0) {
+		if (code !== 0 && !detach) {
 			console.log(`Server exited with code ${code}`);
 		}
 	});
 
-	console.log(`Server started (PID: ${serverProcess.pid})`);
-	console.log(`Gateway running at http://localhost:${port}`);
-	console.log("");
-	console.log("Use 'ollamaduct server stop' to stop the server.");
+	if (detach) {
+		console.log(`Server started in background (PID: ${serverProcess.pid})`);
+		console.log(`Gateway running at http://localhost:${port}`);
+		console.log("");
+		console.log("Use 'ollamaduct stop' to stop the server.");
+	} else {
+		console.log(`Server started (PID: ${serverProcess.pid})`);
+		console.log(`Gateway running at http://localhost:${port}`);
+		console.log("");
+		console.log("Use 'ollamaduct stop' to stop the server.");
+	}
 }
 
 export async function runServerStop() {

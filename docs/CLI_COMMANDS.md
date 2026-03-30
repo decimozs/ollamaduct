@@ -13,11 +13,15 @@ ollamaduct <command> [options]
 ### Start Server
 
 ```bash
-# Start with default port (3000)
+# Start with default port (3000) in foreground
 ollamaduct start
 
 # Start on custom port
 ollamaduct start --port 8080
+
+# Start in background (detached)
+ollamaduct start --detach
+ollamaduct start -d
 ```
 
 ### Stop Server
@@ -31,6 +35,13 @@ ollamaduct stop
 ```bash
 ollamaduct status
 ```
+
+### Server Options
+
+| Option | Alias | Description |
+|--------|-------|-------------|
+| `--port <n>` | | Server port (default: 3000) |
+| `--detach` | `-d` | Run server in background |
 
 ## Initialization
 
@@ -155,16 +166,17 @@ ollamaduct cache --clear --workspace ws_abc123
 
 ## Options
 
-| Option | Description |
-|--------|-------------|
-| `--port <n>` | Server port (default: 3000) |
-| `--limit <n>` | Limit number of results (default: 20) |
-| `--workspace <id>` | Filter by workspace ID |
-| `--model <name>` | Filter by model name |
-| `--clear` | Clear cache |
-| `--force` | Force reinitialize (init only) |
-| `--version, -v` | Show version number |
-| `--help, -h` | Show help message |
+| Option | Alias | Description |
+|--------|-------|-------------|
+| `--port <n>` | | Server port (default: 3000) |
+| `--detach` | `-d` | Run server in background |
+| `--limit <n>` | | Limit number of results (default: 20) |
+| `--workspace <id>` | | Filter by workspace ID |
+| `--model <name>` | | Filter by model name |
+| `--clear` | | Clear cache |
+| `--force` | | Force reinitialize (init only) |
+| `--version, -v` | | Show version number |
+| `--help, -h` | | Show help message |
 
 ## Examples
 
@@ -175,6 +187,8 @@ ollamaduct init
 # Start server
 ollamaduct start
 ollamaduct start --port 8080
+ollamaduct start --detach
+ollamaduct start -d
 
 # Check status
 ollamaduct status

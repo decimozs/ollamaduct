@@ -25,6 +25,7 @@ interface CliOptions {
 	force?: boolean;
 	port?: number;
 	dryRun?: boolean;
+	detach?: boolean;
 }
 
 export const VERSION = "1.0.0";
@@ -60,6 +61,11 @@ function parseArgs(): { command: string; options: CliOptions } {
 
 		if (arg === "--dry-run") {
 			options.dryRun = true;
+			continue;
+		}
+
+		if (arg === "--detach" || arg === "-d") {
+			options.detach = true;
 			continue;
 		}
 
@@ -112,6 +118,7 @@ Commands:
 
 Options:
   --port <n>        Server port (default: 3000)
+  --detach, -d      Run server in background
   --limit <n>       Limit number of results (default: 20)
   --workspace <id>  Filter by workspace ID
   --model <name>    Filter by model name
@@ -125,6 +132,8 @@ Examples:
   ollamaduct init
   ollamaduct start
   ollamaduct start --port 8080
+  ollamaduct start -d
+  ollamaduct start --detach
   ollamaduct stop
   ollamaduct status
   ollamaduct check
