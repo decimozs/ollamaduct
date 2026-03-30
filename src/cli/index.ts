@@ -1,4 +1,5 @@
 import { runCache } from "./commands/cache";
+import { runCheck } from "./commands/check";
 import { runInit } from "./commands/init";
 import { runKeys } from "./commands/keys";
 import { runLogs } from "./commands/logs";
@@ -9,6 +10,7 @@ import {
 	runServerStop,
 } from "./commands/server";
 import { runStats } from "./commands/stats";
+import { runUpgrade } from "./commands/upgrade";
 import { runWorkspaces } from "./commands/workspaces";
 
 interface CliOptions {
@@ -22,9 +24,10 @@ interface CliOptions {
 	delete?: string;
 	force?: boolean;
 	port?: number;
+	dryRun?: boolean;
 }
 
-const VERSION = "1.0.0";
+export const VERSION = "1.0.0";
 
 function parseArgs(): { command: string; options: CliOptions } {
 	const args = process.argv.slice(2);
@@ -52,6 +55,11 @@ function parseArgs(): { command: string; options: CliOptions } {
 
 		if (arg === "--force") {
 			options.force = true;
+			continue;
+		}
+
+		if (arg === "--dry-run") {
+			options.dryRun = true;
 			continue;
 		}
 
@@ -93,6 +101,8 @@ Commands:
   start         Start the gateway server
   stop          Stop the gateway server
   status        Check server status
+  check         Check for updates
+  upgrade       Upgrade to latest version
   logs          View usage logs
   stats         View usage statistics
   keys          Manage API keys
@@ -107,6 +117,7 @@ Options:
   --model <name>    Filter by model name
   --clear           Clear cache
   --force           Force reinitialize (init only)
+  --dry-run         Show what would be upgraded (upgrade only)
   --version, -v     Show version number
   --help, -h        Show this help message
 
@@ -116,6 +127,9 @@ Examples:
   ollamaduct start --port 8080
   ollamaduct stop
   ollamaduct status
+  ollamaduct check
+  ollamaduct upgrade
+  ollamaduct upgrade --dry-run
   ollamaduct logs
   ollamaduct logs --limit 50
   ollamaduct logs --workspace ws_abc123
@@ -155,6 +169,12 @@ async function main() {
 			break;
 		case "status":
 			await runServerStatus();
+			break;
+		case "check":
+			await runCheck();
+			break;
+		case "upgrade":
+			await runUpgrade({ dryRun: options.dryRun });
 			break;
 		case "logs":
 			await runLogs(options);
