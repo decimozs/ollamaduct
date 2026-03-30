@@ -132,15 +132,15 @@ ollamaduct --version
 - **Workspaces** - Organize projects and track usage separately per workspace
 - **Ollama Integration** - Native Ollama gateway with local and cloud model support
 - **Authentication & API Keys** - Secure API key-based authentication per workspace
-- **Cost Tracking & Analytics** - Real-time usage tracking and cost attribution by workspace
+- **Usage Analytics** - Real-time usage tracking and analytics by workspace
 - **Semantic Caching** - Vector-based intelligent caching with 95%+ similarity detection
 - **Privacy Shield** - Enterprise-grade PII detection and redaction with 25+ entity types
 
 ## Use Cases
 
-- **Production AI Applications** - Add authentication, rate limiting, and cost tracking to your AI features
+- **Production AI Applications** - Add authentication, usage tracking, and caching to your AI features
 - **Privacy-Sensitive Workloads** - Keep data on-premise with local Ollama deployment
-- **Cost Optimization** - Cache frequent queries and track usage across teams
+- **Performance Optimization** - Cache frequent queries and speed up responses
 - **Local AI Gateway** - Secure gateway for self-hosted Ollama instances
 - **Compliance** - Automatically redact PII before sending to LLM providers
 
