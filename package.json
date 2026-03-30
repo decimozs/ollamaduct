@@ -1,11 +1,11 @@
 {
 	"name": "ollamaduct",
 	"version": "1.0.0",
-	"description": "Cross-platform Ollama gateway CLI - Connect to local or cloud Ollama instances with API key management",
+	"description": "A lightweight, local-first AI gateway for Ollama with workspaces, cost tracking, and privacy controls.",
 	"type": "module",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/ollamaduct/ollamaduct.git"
+		"url": "git+https://github.com/ollamaduct/ollamaduct.git"
 	},
 	"keywords": [
 		"ollama",
@@ -18,8 +18,8 @@
 	"author": "",
 	"license": "MIT",
 	"bin": {
-		"ollamaduct": "./cli",
-		"ollamaduct.cmd": "./cli.cmd"
+		"ollamaduct": "cli",
+		"ollamaduct.cmd": "cli.cmd"
 	},
 	"files": [
 		"dist/",
