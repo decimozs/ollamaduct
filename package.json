@@ -1,7 +1,7 @@
 {
-	"name": "ollamaduct",
+	"name": "@ollamaduct/gateway",
 	"version": "1.0.0",
-	"description": "A lightweight, local-first AI gateway for Ollama with workspaces, cost tracking, and privacy controls.",
+	"description": "A lightweight, local-first AI gateway for Ollama with workspaces, usage analytics, and privacy controls.",
 	"type": "module",
 	"repository": {
 		"type": "git",
