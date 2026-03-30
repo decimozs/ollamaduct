@@ -106,3 +106,9 @@ Pull additional models with: `ollama pull <model-name>`
 - [CLI Commands](CLI_COMMANDS.md) - Manage workspaces and view analytics
 - [Privacy Shield](PRIVACY_SHIELD.md) - Configure PII detection
 - [Deployment](DEPLOYMENT.md) - Deploy to production
+
+---
+
+## Disclaimer
+
+Ollamaduct is an independent project and is not affiliated with the official Ollama project.

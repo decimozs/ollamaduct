@@ -162,3 +162,9 @@ Open an issue with:
 ## License
 
 By contributing, you agree that your contributions will be licensed under the MIT License.
+
+---
+
+## Disclaimer
+
+Ollamaduct is an independent project and is not affiliated with the official Ollama project.

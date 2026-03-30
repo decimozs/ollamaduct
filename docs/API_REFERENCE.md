@@ -170,3 +170,9 @@ Common models:
 ## Rate Limiting
 
 Rate limiting is planned for future releases.
+
+---
+
+## Disclaimer
+
+Ollamaduct is an independent project and is not affiliated with the official Ollama project.

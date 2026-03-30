@@ -224,3 +224,9 @@ cp pathway.db.backup pathway.db
 
 - Pull models: `ollama pull llama2`
 - Verify Ollama is running: `ollama list`
+
+---
+
+## Disclaimer
+
+Ollamaduct is an independent project and is not affiliated with the official Ollama project.

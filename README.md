@@ -153,3 +153,7 @@ ollamaduct --version
 ## License
 
 MIT License - see [LICENSE](LICENSE) for details.
+
+## Disclaimer
+
+Ollamaduct is an independent project and is not affiliated with the official Ollama project.
