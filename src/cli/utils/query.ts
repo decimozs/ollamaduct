@@ -137,6 +137,30 @@ export async function getApiKeys(_options: {
 	return result as ApiKey[];
 }
 
+export async function createApiKey(
+	name: string,
+	workspaceId: string,
+): Promise<ApiKey> {
+	const id = `key_${globalThis.crypto.randomUUID().replace(/-/g, "").slice(0, 16)}`;
+	const key = `sk_${globalThis.crypto.randomUUID().replace(/-/g, "")}`;
+	const now = Date.now();
+
+	await db`
+		INSERT INTO api_keys (id, key, workspace_id, name, is_active, created_at)
+		VALUES (${id}, ${key}, ${workspaceId}, ${name}, 1, ${now})
+	`;
+
+	return {
+		id,
+		key,
+		workspace_id: workspaceId,
+		name,
+		is_active: 1,
+		created_at: now,
+		last_used_at: null,
+	};
+}
+
 export async function getWorkspaces(_options: {
 	limit?: number;
 }): Promise<Workspace[]> {

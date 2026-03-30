@@ -15,7 +15,16 @@ interface CacheEntry {
 	expires_at: number | null;
 }
 
+interface DbResult {
+	changes?: number;
+}
+
 const cacheStore: Map<string, CacheEntry> = new Map();
+let storeInitialized = false;
+
+export function isVectorStoreInitialized(): boolean {
+	return storeInitialized;
+}
 
 function cosineSimilarity(a: number[], b: number[]): number {
 	let dotProduct = 0;
@@ -35,6 +44,10 @@ function cosineSimilarity(a: number[], b: number[]): number {
 }
 
 export async function initVectorStore(): Promise<void> {
+	if (storeInitialized) {
+		return;
+	}
+
 	try {
 		const existingEntries = await db`
       SELECT * FROM semantic_cache
@@ -54,6 +67,7 @@ export async function initVectorStore(): Promise<void> {
 			cacheStore.set(entry.id, entryWithEmbedding);
 		}
 
+		storeInitialized = true;
 		console.log(`Vector store initialized with ${cacheStore.size} entries`);
 	} catch (error) {
 		console.error("Failed to initialize vector store:", error);
@@ -64,8 +78,9 @@ export async function searchCache(
 	prompt: string,
 	model: string,
 ): Promise<{ response: string; similarity: number } | null> {
-	if (cacheStore.size === 0) {
+	if (!storeInitialized) {
 		await initVectorStore();
+		storeInitialized = true;
 	}
 
 	try {
@@ -157,7 +172,7 @@ export async function clearCache(model?: string): Promise<number> {
 	try {
 		if (model) {
 			const result =
-				await db`DELETE FROM semantic_cache WHERE model = ${model}`;
+				(await db`DELETE FROM semantic_cache WHERE model = ${model}`) as DbResult[];
 
 			let deletedCount = 0;
 			for (const [id, entry] of cacheStore.entries()) {
@@ -167,12 +182,12 @@ export async function clearCache(model?: string): Promise<number> {
 				}
 			}
 
-			return (result as any)?.changes || deletedCount;
+			return result[0]?.changes || deletedCount;
 		} else {
-			const result = await db`DELETE FROM semantic_cache`;
+			const result = (await db`DELETE FROM semantic_cache`) as DbResult[];
 			const count = cacheStore.size;
 			cacheStore.clear();
-			return (result as any)?.changes || count;
+			return result[0]?.changes || count;
 		}
 	} catch (error) {
 		console.error("Error clearing cache:", error);

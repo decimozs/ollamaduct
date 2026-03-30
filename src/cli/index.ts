@@ -1,7 +1,13 @@
 import { runCache } from "./commands/cache";
+import { runInit } from "./commands/init";
 import { runKeys } from "./commands/keys";
 import { runLogs } from "./commands/logs";
 import { runModels } from "./commands/models";
+import {
+	runServerStart,
+	runServerStatus,
+	runServerStop,
+} from "./commands/server";
 import { runStats } from "./commands/stats";
 import { runWorkspaces } from "./commands/workspaces";
 
@@ -10,10 +16,15 @@ interface CliOptions {
 	workspace?: string;
 	model?: string;
 	help?: boolean;
+	version?: boolean;
 	clear?: boolean;
 	create?: string;
 	delete?: string;
+	force?: boolean;
+	port?: number;
 }
+
+const VERSION = "1.0.0";
 
 function parseArgs(): { command: string; options: CliOptions } {
 	const args = process.argv.slice(2);
@@ -29,12 +40,25 @@ function parseArgs(): { command: string; options: CliOptions } {
 			continue;
 		}
 
+		if (arg === "--version" || arg === "-v") {
+			options.version = true;
+			continue;
+		}
+
 		if (arg === "--clear") {
 			options.clear = true;
 			continue;
 		}
 
-		if (arg === "--limit" && nextArg && !nextArg.startsWith("--")) {
+		if (arg === "--force") {
+			options.force = true;
+			continue;
+		}
+
+		if (arg === "--port" && nextArg && !nextArg.startsWith("--")) {
+			options.port = parseInt(nextArg, 10);
+			i++;
+		} else if (arg === "--limit" && nextArg && !nextArg.startsWith("--")) {
 			options.limit = parseInt(nextArg, 10);
 			i++;
 		} else if (arg === "--workspace" && nextArg && !nextArg.startsWith("--")) {
@@ -65,42 +89,54 @@ Ollamaduct CLI - Ollama Gateway
 Usage: ollamaduct <command> [options]
 
 Commands:
-  logs         View usage logs
-  stats        View usage statistics
-  keys         Manage API keys
-  workspaces   Manage workspaces
-  models       List available Ollama models
-  cache        Manage semantic cache
-
-Workspace Commands:
-  ollamaduct workspaces                   List all workspaces
-  ollamaduct workspaces --create "Name"   Create a new workspace
-  ollamaduct workspaces --delete <id>     Delete a workspace
+  init          Initialize Ollamaduct (first-time setup)
+  start         Start the gateway server
+  stop          Stop the gateway server
+  status        Check server status
+  logs          View usage logs
+  stats         View usage statistics
+  keys          Manage API keys
+  workspaces    Manage workspaces
+  models        List available Ollama models
+  cache         Manage semantic cache
 
 Options:
+  --port <n>        Server port (default: 3000)
   --limit <n>       Limit number of results (default: 20)
   --workspace <id>  Filter by workspace ID
   --model <name>    Filter by model name
   --clear           Clear cache
+  --force           Force reinitialize (init only)
+  --version, -v     Show version number
   --help, -h        Show this help message
 
 Examples:
+  ollamaduct init
+  ollamaduct start
+  ollamaduct start --port 8080
+  ollamaduct stop
+  ollamaduct status
   ollamaduct logs
   ollamaduct logs --limit 50
   ollamaduct logs --workspace ws_abc123
   ollamaduct stats
-  ollamaduct stats --workspace ws_abc123
   ollamaduct workspaces
   ollamaduct workspaces --create "My Project"
+  ollamaduct keys
   ollamaduct models
   ollamaduct cache
   ollamaduct cache --clear
-  `.trim(),
+`.trim(),
 	);
 }
 
 async function main() {
 	const { command, options } = parseArgs();
+
+	if (options.version) {
+		console.log(`ollamaduct version ${VERSION}`);
+		return;
+	}
 
 	if (options.help) {
 		printHelp();
@@ -108,6 +144,18 @@ async function main() {
 	}
 
 	switch (command) {
+		case "init":
+			await runInit(options);
+			break;
+		case "start":
+			await runServerStart(options);
+			break;
+		case "stop":
+			await runServerStop();
+			break;
+		case "status":
+			await runServerStatus();
+			break;
 		case "logs":
 			await runLogs(options);
 			break;

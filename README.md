@@ -4,7 +4,123 @@ A lightweight, local-first AI gateway for Ollama with workspaces, cost tracking,
 
 ## Overview
 
-Ollamaduct sits between your applications and LLM providers, providing essential features for production AI applications: authentication, usage analytics, intelligent caching, and enterprise-grade PII detection.
+Ollamaduct is an open-source gateway designed to sit between your local apps and Ollama. It adds a layer of intelligence to your LLM setup, handling the heavy lifting like managing access, tracking usage, and speeding up responses with smart caching while ensuring sensitive data stays under your control.
+
+## Installation
+
+### Prerequisites
+
+- [Bun](https://bun.sh) or [Node.js](https://nodejs.org) 18+
+- [Ollama](https://ollama.com) (local or cloud)
+
+### Quick Install
+
+```bash
+# Using npm
+npm install -g ollamaduct
+
+# Using bun
+bun install -g ollamaduct
+```
+
+### Verify Installation
+
+```bash
+ollamaduct --version
+```
+
+## Configuration
+
+### First-Time Setup
+
+```bash
+ollamaduct init
+```
+
+This creates the configuration file at `~/.ollamaduct/config.env` (Linux/Mac) or `%APPDATA%/ollamaduct/config.env` (Windows).
+
+### Configuration File
+
+Edit the config file to customize your gateway:
+
+```bash
+# Ollama Settings
+OLLAMA_URL=https://ollama.com
+OLLAMA_API_KEY=your_ollama_api_key
+
+# Security - REQUIRED for production
+API_KEY=your-secure-gateway-api-key
+
+# Default model
+DEFAULT_MODEL=llama2
+```
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `OLLAMA_URL` | Ollama endpoint URL | `http://localhost:11434` |
+| `OLLAMA_API_KEY` | API key for Ollama Cloud | - |
+| `API_KEY` | Gateway authentication key | (not set - insecure) |
+| `DEFAULT_MODEL` | Default model to use | `llama2` |
+
+## Quick Start
+
+```bash
+# Start the gateway server
+ollamaduct start
+
+# Or start on custom port
+ollamaduct start --port 8080
+
+# Check server status
+ollamaduct status
+
+# Stop the server
+ollamaduct stop
+```
+
+### Usage Examples
+
+```bash
+# List available models
+ollamaduct models
+
+# Manage API keys
+ollamaduct keys
+ollamaduct keys --create
+
+# View usage logs
+ollamaduct logs
+ollamaduct logs --limit 50
+
+# View statistics
+ollamaduct stats
+
+# Manage workspaces
+ollamaduct workspaces
+ollamaduct workspaces --create "My Project"
+
+# Manage cache
+ollamaduct cache
+ollamaduct cache --clear
+```
+
+## Upgrade
+
+To upgrade to the latest version:
+
+```bash
+# Using npm
+npm install -g ollamaduct
+
+# Using bun
+bun install -g ollamaduct
+```
+
+Check current version:
+
+```bash
+ollamaduct --version
+```
 
 ## Features
 
@@ -34,4 +150,4 @@ Ollamaduct sits between your applications and LLM providers, providing essential
 
 ## License
 
-MIT License - see [LICENSE](../LICENSE) for details.
+MIT License - see [LICENSE](LICENSE) for details.

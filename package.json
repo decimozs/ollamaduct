@@ -1,10 +1,38 @@
 {
-	"name": "@ollamaduct/gateway",
+	"name": "ollamaduct",
+	"version": "1.0.0",
+	"description": "Cross-platform Ollama gateway CLI - Connect to local or cloud Ollama instances with API key management",
 	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ollamaduct/ollamaduct.git"
+	},
+	"keywords": [
+		"ollama",
+		"llm",
+		"gateway",
+		"cli",
+		"ai",
+		"machine-learning"
+	],
+	"author": "",
+	"license": "MIT",
+	"bin": {
+		"ollamaduct": "./cli",
+		"ollamaduct.cmd": "./cli.cmd"
+	},
+	"files": [
+		"dist/",
+		"cli",
+		"cli.cmd"
+	],
 	"scripts": {
 		"test": "bun test",
-		"dev": "bun run --hot src/index.ts",
-		"build": "bun build src/index.ts --outdir=dist --target=bun",
+		"dev": "bun run --hot src/server.ts",
+		"build": "bun build src/index.ts --outdir=dist --target=bun --external @xenova/transformers",
+		"build:server": "bun build src/server.ts --outdir=dist --target=bun --external @xenova/transformers",
+		"build:cli": "bun build src/cli/index.ts --outdir=dist/cli_temp --target=bun --external bun --external @xenova/transformers && mv dist/cli_temp/index.js dist/cli.js && rmdir dist/cli_temp",
+		"build:all": "bun run build && bun run build:server && bun run build:cli",
 		"lint": "biome check .",
 		"format": "biome format --write .",
 		"typecheck": "tsc --noEmit",

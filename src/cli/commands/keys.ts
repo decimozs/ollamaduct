@@ -1,10 +1,40 @@
-import { formatTimestamp, getApiKeys } from "../utils/query";
+import {
+	createApiKey,
+	formatTimestamp,
+	getApiKeys,
+	getWorkspaces,
+} from "../utils/query";
 
 interface CliOptions {
 	limit?: number;
+	create?: string;
+	workspace?: string;
 }
 
 export async function runKeys(options: CliOptions) {
+	if (options.create) {
+		const workspaces = await getWorkspaces({});
+		const workspaceId = options.workspace || workspaces[0]?.id;
+
+		if (!workspaceId) {
+			console.log("No workspace found. Create one first:");
+			console.log('  ollamaduct workspaces --create "My Workspace"');
+			return;
+		}
+
+		const key = await createApiKey(options.create, workspaceId);
+		console.log("");
+		console.log("API key created successfully!");
+		console.log("");
+		console.log(`  Name: ${options.create}`);
+		console.log(`  Key: ${key.key}`);
+		console.log(`  Workspace: ${workspaceId}`);
+		console.log("");
+		console.log("Use this key in requests:");
+		console.log(`  curl -H "Authorization: Bearer ${key.key}" ...`);
+		return;
+	}
+
 	const keys = await getApiKeys(options);
 
 	if (keys.length === 0) {

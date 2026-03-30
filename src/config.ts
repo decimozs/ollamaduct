@@ -1,4 +1,46 @@
+import { existsSync, readFileSync } from "node:fs";
+import { homedir } from "node:os";
+import { join } from "node:path";
 import type { PIIConfig } from "./types";
+
+function getDataDir(): string {
+	if (process.platform === "win32") {
+		return process.env.APPDATA
+			? join(process.env.APPDATA, "ollamaduct")
+			: join(homedir(), "AppData", "Roaming", "ollamaduct");
+	}
+	return join(homedir(), ".ollamaduct");
+}
+
+export const DATA_DIR = getDataDir();
+export const DB_PATH = join(DATA_DIR, "ollamaduct.db");
+export const CONFIG_PATH = join(DATA_DIR, "config.env");
+export const PID_PATH = join(DATA_DIR, "server.pid");
+
+function loadConfigFile(filePath: string): void {
+	if (!existsSync(filePath)) {
+		return;
+	}
+
+	const content = readFileSync(filePath, "utf-8");
+	for (const line of content.split(/\r?\n/)) {
+		const trimmed = line.trim();
+		if (trimmed && !trimmed.startsWith("#")) {
+			const equalsIndex = trimmed.indexOf("=");
+			if (equalsIndex > 0) {
+				const key = trimmed.slice(0, equalsIndex).trim();
+				const value = trimmed.slice(equalsIndex + 1).trim();
+				process.env[key] = value;
+			}
+		}
+	}
+}
+
+loadConfigFile(CONFIG_PATH);
+
+if (!existsSync(CONFIG_PATH) && existsSync("./.env")) {
+	loadConfigFile("./.env");
+}
 
 export interface OllamaConfig {
 	url: string;
@@ -14,10 +56,8 @@ export const DEFAULT_MODEL = process.env.DEFAULT_MODEL || "llama2";
 
 export const API_KEY = process.env.API_KEY;
 
-if (!API_KEY) {
-	console.warn(
-		"Warning: API_KEY not set in .env - gateway will not be secured!",
-	);
+if (!API_KEY && process.env.SHOW_API_KEY_WARNING === "true") {
+	console.warn("Warning: API_KEY not set - gateway will not be secured!");
 }
 
 export const PII_CONFIG: PIIConfig = {

@@ -9,6 +9,11 @@ env.useBrowserCache = false;
 env.cacheDir = ".cache/transformers";
 
 let embedder: FeatureExtractionPipeline | null = null;
+let modelLoaded = false;
+
+interface EmbeddingOutput {
+	data: Float32Array;
+}
 
 export const EMBEDDING_MODEL = "Xenova/all-MiniLM-L6-v2";
 export const EMBEDDING_DIMENSION = 384;
@@ -20,16 +25,20 @@ export async function generateEmbedding(text: string): Promise<number[]> {
 			"feature-extraction",
 			EMBEDDING_MODEL,
 		)) as FeatureExtractionPipeline;
+		modelLoaded = true;
 		console.log("Embedding model loaded!");
 	}
 
-	const output = await embedder(text, {
+	const output = (await embedder(text, {
 		pooling: "mean",
 		normalize: true,
-	});
+	})) as EmbeddingOutput;
 
-	// The output should have a 'data' property with Float32Array
-	return Array.from((output as any).data as Float32Array);
+	return Array.from(output.data);
+}
+
+export function isEmbeddingModelLoaded(): boolean {
+	return modelLoaded;
 }
 
 export async function generateHash(text: string): Promise<string> {

@@ -5,27 +5,61 @@ Ollamaduct includes a comprehensive CLI for managing workspaces, API keys, and v
 ## Usage
 
 ```bash
-bun run cli <command> [options]
+ollamaduct <command> [options]
 ```
+
+## Server Management
+
+### Start Server
+
+```bash
+# Start with default port (3000)
+ollamaduct start
+
+# Start on custom port
+ollamaduct start --port 8080
+```
+
+### Stop Server
+
+```bash
+ollamaduct stop
+```
+
+### Server Status
+
+```bash
+ollamaduct status
+```
+
+## Initialization
+
+### First-Time Setup
+
+```bash
+ollamaduct init
+```
+
+This creates the necessary configuration and database files in your data directory.
 
 ## Workspace Management
 
 ### List Workspaces
 
 ```bash
-bun run cli workspaces
+ollamaduct workspaces
 ```
 
 ### Create Workspace
 
 ```bash
-bun run cli workspaces --create "My Project"
+ollamaduct workspaces --create "My Project"
 ```
 
 ### Delete Workspace
 
 ```bash
-bun run cli workspaces --delete ws_abc123
+ollamaduct workspaces --delete ws_abc123
 ```
 
 ## Model Management
@@ -33,33 +67,33 @@ bun run cli workspaces --delete ws_abc123
 ### List Available Models
 
 ```bash
-bun run cli models
+ollamaduct models
 ```
 
-This shows models available in your local Ollama installation.
+This shows models available in your local Ollama installation or Ollama Cloud.
 
 ## API Key Management
 
 ### List API Keys
 
 ```bash
-bun run cli keys
+ollamaduct keys
 ```
 
 ### Create API Key
 
 ```bash
 # Create with default workspace
-bun run cli keys --create
+ollamaduct keys --create
 
 # Create with specific workspace
-bun run cli keys --create --workspace "My Project"
+ollamaduct keys --create --workspace ws_abc123
 ```
 
 ### Delete API Key
 
 ```bash
-bun run cli keys --delete key_abc123
+ollamaduct keys --delete key_abc123
 ```
 
 ## Usage Logs
@@ -68,19 +102,19 @@ bun run cli keys --delete key_abc123
 
 ```bash
 # View recent logs
-bun run cli logs
+ollamaduct logs
 
 # Limit results
-bun run cli logs --limit 50
+ollamaduct logs --limit 50
 
 # Filter by workspace
-bun run cli logs --workspace ws_abc123
+ollamaduct logs --workspace ws_abc123
 
 # Filter by model
-bun run cli logs --model llama2
+ollamaduct logs --model llama2
 
 # Combine filters
-bun run cli logs --workspace ws_abc123 --model llama2 --limit 100
+ollamaduct logs --workspace ws_abc123 --model llama2 --limit 100
 ```
 
 ## Statistics
@@ -89,13 +123,13 @@ bun run cli logs --workspace ws_abc123 --model llama2 --limit 100
 
 ```bash
 # Overall statistics
-bun run cli stats
+ollamaduct stats
 
 # By workspace
-bun run cli stats --workspace ws_abc123
+ollamaduct stats --workspace ws_abc123
 
 # By model
-bun run cli stats --model llama2
+ollamaduct stats --model llama2
 ```
 
 ## Cache Management
@@ -103,59 +137,70 @@ bun run cli stats --model llama2
 ### View Cache Statistics
 
 ```bash
-bun run cli cache
+ollamaduct cache
 ```
 
 ### Clear Cache
 
 ```bash
 # Clear all cache
-bun run cli cache --clear
+ollamaduct cache --clear
 
 # Clear by model
-bun run cli cache --clear --model llama2
+ollamaduct cache --clear --model llama2
 
 # Clear by workspace
-bun run cli cache --clear --workspace ws_abc123
+ollamaduct cache --clear --workspace ws_abc123
 ```
 
-## Model Rates
+## Options
 
-### View Model Rates
+| Option | Description |
+|--------|-------------|
+| `--port <n>` | Server port (default: 3000) |
+| `--limit <n>` | Limit number of results (default: 20) |
+| `--workspace <id>` | Filter by workspace ID |
+| `--model <name>` | Filter by model name |
+| `--clear` | Clear cache |
+| `--force` | Force reinitialize (init only) |
+| `--version, -v` | Show version number |
+| `--help, -h` | Show help message |
 
-```bash
-bun run cli rates
-```
-
-### Add Model Rate
-
-```bash
-# Add rate for a model (for cost tracking)
-bun run cli rates --add --model llama2 --input-rate 0.0 --output-rate 0.0
-```
-
-### Delete Model Rate
+## Examples
 
 ```bash
-bun run cli rates --delete llama2
-```
+# First time setup
+ollamaduct init
 
-## Teams
+# Start server
+ollamaduct start
+ollamaduct start --port 8080
 
-### List Teams
+# Check status
+ollamaduct status
 
-```bash
-bun run cli teams
-```
+# View logs
+ollamaduct logs
+ollamaduct logs --limit 50 --workspace ws_abc123
 
-### Create Team
+# View statistics
+ollamaduct stats
 
-```bash
-bun run cli teams --create "Engineering"
-```
+# Manage workspaces
+ollamaduct workspaces
+ollamaduct workspaces --create "My Project"
 
-### Delete Team
+# Manage API keys
+ollamaduct keys
+ollamaduct keys --create --workspace ws_abc123
 
-```bash
-bun run cli teams --delete team_abc123
+# List models
+ollamaduct models
+
+# Manage cache
+ollamaduct cache
+ollamaduct cache --clear
+
+# Stop server
+ollamaduct stop
 ```

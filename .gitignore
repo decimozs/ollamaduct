@@ -1,6 +1,7 @@
 # Database
 *.db
 pathway.db
+.ollamaduct/
 
 # Environment
 .env

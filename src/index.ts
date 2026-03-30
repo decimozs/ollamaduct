@@ -21,8 +21,16 @@ const log = new LogLayer({
 	}),
 });
 
+const isOllamaCloud = OLLAMA_CONFIG.url.startsWith("https://ollama.com");
+const ollamaHeaders: Record<string, string> = {};
+
+if (isOllamaCloud && process.env.OLLAMA_API_KEY) {
+	ollamaHeaders.Authorization = `Bearer ${process.env.OLLAMA_API_KEY}`;
+}
+
 const ollama = new Ollama({
 	host: OLLAMA_CONFIG.url,
+	headers: Object.keys(ollamaHeaders).length > 0 ? ollamaHeaders : undefined,
 });
 
 const app = createApp()
@@ -37,7 +45,7 @@ const app = createApp()
 	})
 	.get("/api/tags", async (c) => {
 		const auth = await authMiddleware(c);
-		if (!auth) return;
+		if (!auth) return c.text("Unauthorized", 401);
 
 		try {
 			const data = await ollama.list();
@@ -49,7 +57,7 @@ const app = createApp()
 	})
 	.post("/api/chat", async (c) => {
 		const auth = await authMiddleware(c);
-		if (!auth) return;
+		if (!auth) return c.text("Unauthorized", 401);
 
 		const body = await c.req.json();
 		const requestBody = body as OllamaRequest;
@@ -79,13 +87,17 @@ const app = createApp()
 		const cacheEnabled = c.req.header("x-cache") !== "false";
 
 		if (cacheEnabled && promptText && !isStreaming) {
-			const cachedResult = await searchCache(promptText, model);
-			if (cachedResult) {
-				return c.json({
-					message: cachedResult.response,
-					_cache: "HIT",
-					_cache_similarity: cachedResult.similarity.toFixed(4),
-				});
+			try {
+				const cachedResult = await searchCache(promptText, model);
+				if (cachedResult) {
+					return c.json({
+						message: cachedResult.response,
+						_cache: "HIT",
+						_cache_similarity: cachedResult.similarity.toFixed(4),
+					});
+				}
+			} catch (error) {
+				console.error("Cache read error:", error);
 			}
 		}
 
