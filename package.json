@@ -1,58 +1,58 @@
 {
-  "name": "@ollamaduct/gateway",
-  "version": "1.0.0",
-  "description": "A lightweight, local-first AI gateway for Ollama with workspaces, usage analytics, and privacy controls.",
-  "type": "module",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/decimozs/ollamaduct.git"
-  },
-  "keywords": [
-    "ollama",
-    "llm",
-    "gateway",
-    "cli",
-    "ai",
-    "machine-learning"
-  ],
-  "author": "",
-  "license": "MIT",
-  "bin": {
-    "ollamaduct": "cli",
-    "ollamaduct.cmd": "cli.cmd"
-  },
-  "files": [
-    "dist/",
-    "cli",
-    "cli.cmd"
-  ],
-  "scripts": {
-    "test": "bun test",
-    "dev": "bun run --hot src/server.ts",
-    "build": "bun build src/index.ts --outdir=dist --target=bun --external @xenova/transformers",
-    "build:server": "bun build src/server.ts --outdir=dist --target=bun --external @xenova/transformers",
-    "build:cli": "bun build src/cli/index.ts --outdir=dist/cli_temp --target=bun --external bun --external @xenova/transformers && mv dist/cli_temp/index.js dist/cli.js && rmdir dist/cli_temp",
-    "build:all": "bun run build && bun run build:server && bun run build:cli",
-    "lint": "biome check .",
-    "format": "biome format --write .",
-    "typecheck": "tsc --noEmit",
-    "migrate": "bun run src/db/migrate.ts",
-    "seed": "bun run src/db/seed.ts",
-    "cli": "bun run src/cli/index.ts"
-  },
-  "dependencies": {
-    "@loglayer/hono": "^2.1.0",
-    "@loglayer/transport-simple-pretty-terminal": "^3.0.2",
-    "@xenova/transformers": "^2.17.2",
-    "hono": "^4.12.14",
-    "loglayer": "^9.1.0",
-    "nanoid": "^5.1.9",
-    "ollama": "^0.6.3",
-    "serialize-error": "^13.0.1"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "2.4.9",
-    "@types/bun": "latest",
-    "lefthook": "^2.1.6"
-  }
+	"name": "@ollamaduct/gateway",
+	"version": "1.0.1",
+	"description": "A lightweight, local-first AI gateway for Ollama with workspaces, usage analytics, and privacy controls.",
+	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/decimozs/ollamaduct.git"
+	},
+	"keywords": [
+		"ollama",
+		"llm",
+		"gateway",
+		"cli",
+		"ai",
+		"machine-learning"
+	],
+	"author": "",
+	"license": "MIT",
+	"bin": {
+		"ollamaduct": "cli",
+		"ollamaduct.cmd": "cli.cmd"
+	},
+	"files": [
+		"dist/",
+		"cli",
+		"cli.cmd"
+	],
+	"scripts": {
+		"test": "bun test",
+		"dev": "bun run --hot src/server.ts",
+		"build": "bun build src/index.ts --outdir=dist --target=bun --external @xenova/transformers",
+		"build:server": "bun build src/server.ts --outdir=dist --target=bun --external @xenova/transformers",
+		"build:cli": "bun build src/cli/index.ts --outdir=dist/cli_temp --target=bun --external bun --external @xenova/transformers && mv dist/cli_temp/index.js dist/cli.js && rmdir dist/cli_temp",
+		"build:all": "bun run build && bun run build:server && bun run build:cli",
+		"lint": "biome check .",
+		"format": "biome format --write .",
+		"typecheck": "tsc --noEmit",
+		"migrate": "bun run src/db/migrate.ts",
+		"seed": "bun run src/db/seed.ts",
+		"cli": "bun run src/cli/index.ts"
+	},
+	"dependencies": {
+		"@loglayer/hono": "^2.1.0",
+		"@loglayer/transport-simple-pretty-terminal": "^3.0.2",
+		"@xenova/transformers": "^2.17.2",
+		"hono": "^4.12.14",
+		"loglayer": "^9.1.0",
+		"nanoid": "^5.1.9",
+		"ollama": "^0.6.3",
+		"serialize-error": "^13.0.1"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.4.9",
+		"@types/bun": "latest",
+		"lefthook": "^2.1.6"
+	}
 }
