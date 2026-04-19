@@ -1,4 +1,4 @@
-<img width="180" height="200" alt="Gemini_Generated_Image_b0130pb0130pb013 1" src="https://github.com/user-attachments/assets/6eda59f4-923a-40e4-b5c9-a0ee3f8851c1" />
+<img width="130" height="130" alt="Ollamaduct Logo" src="https://github.com/user-attachments/assets/6eda59f4-923a-40e4-b5c9-a0ee3f8851c1" />
 
 # Ollamaduct
 
