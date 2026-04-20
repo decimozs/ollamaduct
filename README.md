@@ -26,10 +26,10 @@ Ollamaduct is an open-source gateway designed to sit between your local apps and
 
 ```bash
 # Using npm
-npm install -g ollamaduct
+npm install -g @ollamaduct/gateway
 
 # Using bun
-bun install -g ollamaduct
+bun install -g @ollamaduct/gateway
 ```
 
 ### Verify Installation
@@ -119,10 +119,10 @@ To upgrade to the latest version:
 
 ```bash
 # Using npm
-npm install -g ollamaduct
+npm install -g @ollamaduct/gateway
 
 # Using bun
-bun install -g ollamaduct
+bun install -g @ollamaduct/gateway
 ```
 
 Check current version:

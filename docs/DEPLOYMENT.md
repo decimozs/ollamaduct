@@ -46,11 +46,11 @@ CMD ["bun", "run", "src/index.ts"]
 ### Build and Run
 
 ```bash
-docker build -t ollamaduct-gateway .
+docker build -t @ollamaduct/gateway .
 docker run -p 3000:3000 \
   -e OLLAMA_URL=http://host.docker.internal:11434 \
   -v ollama_data:/root/.ollama \
-  ollamaduct-gateway
+  @ollamaduct/gateway
 ```
 
 ### Docker Compose
@@ -67,7 +67,7 @@ services:
       - OLLAMA_URL=http://host.docker.internal:11434
       - DEFAULT_MODEL=llama2
     volumes:
-      - ./pathway.db:/app/pathway.db
+      - ~/.ollamaduct:/root/.ollamaduct
       - ollama_data:/root/.ollama
 
 volumes:
@@ -191,13 +191,13 @@ For high availability, run multiple instances behind a load balancer:
 ### Backup Database
 
 ```bash
-cp pathway.db pathway.db.backup
+cp ~/.ollamaduct/ollamaduct.db ~/.ollamaduct/ollamaduct.db.backup
 ```
 
 ### Restore
 
 ```bash
-cp pathway.db.backup pathway.db
+cp ~/.ollamaduct/ollamaduct.db.backup ~/.ollamaduct/ollamaduct.db
 ```
 
 ## Troubleshooting
