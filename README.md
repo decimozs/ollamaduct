@@ -1,6 +1,10 @@
-<img width="130" height="130" alt="Ollamaduct Logo" src="https://github.com/user-attachments/assets/6eda59f4-923a-40e4-b5c9-a0ee3f8851c1" />
+<img width="150" height="130" alt="Ollamaduct Logo" src="https://github.com/user-attachments/assets/6eda59f4-923a-40e4-b5c9-a0ee3f8851c1" />
 
 # Ollamaduct
+
+[![npm version](https://img.shields.io/npm/v/@ollamaduct/gateway.svg)](https://www.npmjs.com/package/@ollamaduct/gateway)
+[![npm downloads](https://img.shields.io/npm/dm/@ollamaduct/gateway.svg)](https://www.npmjs.com/package/@ollamaduct/gateway)
+[![License](https://img.shields.io/npm/l/@ollamaduct/gateway.svg)](LICENSE)
 
 A lightweight, local-first AI gateway for Ollama with workspaces, usage analytics, and privacy controls.
 
