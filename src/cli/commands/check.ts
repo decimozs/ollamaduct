@@ -23,7 +23,7 @@ export async function runCheck(): Promise<void> {
 
 	try {
 		const response = await fetch(
-			"https://registry.npmjs.org/ollamaduct/latest",
+			"https://registry.npmjs.org/@ollamaduct/gateway/latest",
 		);
 
 		if (!response.ok) {

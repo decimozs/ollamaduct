@@ -21,7 +21,7 @@ function compareVersions(a: string, b: string): number {
 async function getLatestVersion(): Promise<string | null> {
 	try {
 		const response = await fetch(
-			"https://registry.npmjs.org/ollamaduct/latest",
+			"https://registry.npmjs.org/@ollamaduct/gateway/latest",
 		);
 		if (!response.ok) {
 			return null;
@@ -85,10 +85,10 @@ export async function runUpgrade(options: { dryRun?: boolean }): Promise<void> {
 	try {
 		if (useBun) {
 			console.log("Using bun to upgrade...");
-			execSync("bun install -g ollamaduct", { stdio: "inherit" });
+			execSync("bun install -g @ollamaduct/gateway", { stdio: "inherit" });
 		} else {
 			console.log("Using npm to upgrade...");
-			execSync("npm install -g ollamaduct", { stdio: "inherit" });
+			execSync("npm install -g @ollamaduct/gateway", { stdio: "inherit" });
 		}
 
 		console.log("");
@@ -98,8 +98,8 @@ export async function runUpgrade(options: { dryRun?: boolean }): Promise<void> {
 		console.error("Failed to upgrade:", error);
 		console.log("");
 		console.log("You can manually upgrade by running:");
-		console.log(`  npm install -g ollamaduct`);
+		console.log(`  npm install -g @ollamaduct/gateway`);
 		console.log(`or`);
-		console.log(`  bun install -g ollamaduct`);
+		console.log(`  bun install -g @ollamaduct/gateway`);
 	}
 }
