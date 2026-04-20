@@ -7,11 +7,16 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    runs:
-      using: node24
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org/
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -25,6 +30,6 @@ jobs:
         run: bun run build:all
 
       - name: Publish to npm
-        uses: JS-DevTools/npm-publish@v3
-        with:
-          token: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
